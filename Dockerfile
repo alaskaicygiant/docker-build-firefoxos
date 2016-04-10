@@ -48,8 +48,10 @@ RUN apt-get install -y wget \
               libxtst6:i386 \
               libxt-dev
 
-RUN npm install -g bower
 RUN echo { \"allow_root\": true } >> /root/.bowerrc
+RUN npm install -g bower
+RUN npm install -g babel-cli
+RUN npm install -g uglify-js
 RUN ln -s `which nodejs` /usr/local/bin/node
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 1
