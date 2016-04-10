@@ -12,12 +12,10 @@ ENV SHELL=/bin/bash \
 RUN dpkg --add-architecture i386
 RUN apt-get update
 
-RUN apt-get install -y wget \
-              curl \
+RUN apt-get install -y curl \
               mkisofs \
               zip \
               unzip \
-              python \
               python-dev \
               python-virtualenv \
               awscli \
@@ -49,10 +47,10 @@ RUN apt-get install -y wget \
               libxt-dev
 
 RUN echo { \"allow_root\": true } >> /root/.bowerrc
+RUN ln -s `which nodejs` /usr/local/bin/node
 RUN npm install -g bower
 RUN npm install -g babel-cli
 RUN npm install -g uglify-js
-RUN ln -s `which nodejs` /usr/local/bin/node
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 1
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 2
