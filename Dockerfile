@@ -3,7 +3,7 @@ MAINTAINER Owen Ouyang <owen.ouyang@live.com>
 
 ENV SHELL=/bin/bash \
     WORK_USER="docker" \
-    WORK_HOME="/build" \
+    WORK_HOME="/home/${WORK_USER}" \
     GIT_EMAIL="owen.ouyang@live.com" \
     GIT_NAME="Owen Ouyang" \
     CCACHE_DIR="/docker/ccache" \
