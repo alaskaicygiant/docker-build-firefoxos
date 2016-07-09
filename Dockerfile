@@ -33,6 +33,7 @@ RUN dpkg --add-architecture i386 && \
               dosfstools \
               software-properties-common \
               build-essential \
+              git \
               g++-multilib \
               distcc \
               ccache \
