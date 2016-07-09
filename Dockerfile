@@ -6,13 +6,22 @@ ENV SHELL=/bin/bash \
     WORK_HOME="/build" \
     GIT_EMAIL="owen.ouyang@live.com" \
     GIT_NAME="Owen Ouyang" \
-    CCACHE_DIR="/build/ccache" \
-    CCACHE_UMASK=002
+    CCACHE_DIR="/docker/ccache" \
+    CCACHE_UMASK=002 \
+    LOG_DIR="/var/log/docker" \
+    TERM=dumb
 
-RUN dpkg --add-architecture i386
-RUN apt-get update
-
-RUN apt-get install -y curl \
+RUN dpkg --add-architecture i386 && \
+    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && \
+    echo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections && \
+    add-apt-repository ppa:webupd8team/java && \
+    apt-get update && \
+    apt-get install -y \
+              oracle-java8-installer \
+              oracle-java8-set-default \
+              curl \
+              nodejs \
+              npm \
               mkisofs \
               zip \
               unzip \
@@ -20,12 +29,18 @@ RUN apt-get install -y curl \
               python-virtualenv \
               awscli \
               dosfstools \
-              gcc-4.6 \
-              g++-4.6 \
-              g++-4.6-multilib \
-              gcc-4.7 \
-              g++-4.7 \
-              g++-4.7-multilib \
+              software-properties-common \
+              build-essential \
+              g++-multilib \
+              distcc \
+              ccache \
+              icecc \
+              make \
+              bc \
+              autoconf2.13 \
+              bison \
+              flex \
+              gawk \
               lib32ncurses5-dev \
               lib32z1-dev \
               zlib1g:amd64 \
@@ -44,39 +59,29 @@ RUN apt-get install -y curl \
               libgtk2.0-0 \
               libxtst6:amd64 \
               libxtst6:i386 \
-              libxt-dev
+              libxt-dev && \
+    update-java-alternatives -s java-8-oracle && \
+    echo { \"allow_root\": true } >> /root/.bowerrc && \
+    ln -s `which nodejs` /usr/local/bin/node && \
+    npm install -g \
+            npm \
+            bower \
+            babel-cli \
+            uglify-js && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    git config --global user.email "${GIT_EMAIL}" && \
+    git config --global user.name "${GIT_NAME}" && \
+    git config --global color.ui false && \
+    groupadd -r ${WORK_USER} -g 1000 && \
+    useradd -r -u 1000 -s /bin/bash -m -g ${WORK_USER} ${WORK_USER} && \
+    echo "${WORK_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime && \
+    echo nameserver 8.8.8.8 >> /etc/resolv.conf && \
+    ccache --max-size 10GB
 
-RUN echo { \"allow_root\": true } >> /root/.bowerrc
-RUN ln -s `which nodejs` /usr/local/bin/node
-RUN npm install -g bower
-RUN npm install -g babel-cli
-RUN npm install -g uglify-js
-
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 1
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 2
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 3
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.6 1
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 2
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 3
-RUN update-alternatives --set gcc "/usr/bin/gcc-4.6"
-RUN update-alternatives --set g++ "/usr/bin/g++-4.6"
-
-# Clean up any files used by apt-get
-# RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN git config --global user.email "${GIT_EMAIL}"
-RUN git config --global user.name "${GIT_NAME}"
-
-# add user
-RUN groupadd -r ${WORK_USER} -g 1000 && useradd -r -u 1000 -s /bin/bash -m -g ${WORK_USER} ${WORK_USER}
-RUN echo "${WORK_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-# USER ${WORK_USER}
-
-RUN cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+USER ${WORK_USER}
 
 VOLUME ["${WORK_HOME}", "${LOG_DIR}"]
 WORKDIR ${WORK_HOME}
 
-RUN echo nameserver 8.8.8.8 >> /etc/resolv.conf
-RUN ccache --max-size 10GB
 CMD ["/sbin/my_init"]
