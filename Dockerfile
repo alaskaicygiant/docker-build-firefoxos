@@ -1,4 +1,4 @@
-FROM quay.io/alaskaicygiant/nodejs
+FROM phusion/baseimage
 MAINTAINER Owen Ouyang <owen.ouyang@live.com>
 
 ENV SHELL=/bin/bash \
