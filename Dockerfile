@@ -11,9 +11,11 @@ ENV SHELL=/bin/bash \
     LOG_DIR="/var/log/docker" \
     TERM=dumb
 
+USER root
+
 RUN dpkg --add-architecture i386 && \
-    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && \
-    echo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections && \
+    echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+    echo echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get update && \
     apt-get install -y \
