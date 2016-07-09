@@ -34,8 +34,8 @@ RUN dpkg --add-architecture i386 && \
               software-properties-common \
               build-essential \
               git \
-              gcc \
-              g++ \
+              gcc-4.8 \
+              g++-4.8 \
               g++-multilib \
               distcc \
               ccache \
