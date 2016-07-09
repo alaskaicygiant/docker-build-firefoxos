@@ -47,8 +47,6 @@ RUN dpkg --add-architecture i386 && \
               lib32z1-dev \
               zlib1g:amd64 \
               zlib1g-dev:amd64 \
-              zlib1g:i386 \
-              zlib1g-dev:i386 \
               libgl1-mesa-dev \
               libx11-dev \
               libxml2-utils \
