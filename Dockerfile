@@ -68,7 +68,6 @@ RUN dpkg --add-architecture i386 && \
     npm install -g \
             npm \
             bower \
-            babel-cli \
             uglify-js && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     git config --global user.email "${GIT_EMAIL}" && \
