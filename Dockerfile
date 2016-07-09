@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM quay.io/alaska/baseimage
 MAINTAINER Owen Ouyang <owen.ouyang@live.com>
 
 ENV SHELL=/bin/bash \
@@ -67,6 +67,7 @@ RUN dpkg --add-architecture i386 && \
     echo { \"allow_root\": true } >> /root/.bowerrc && \
     ln -s `which nodejs` /usr/local/bin/node && \
     npm install -g \
+            babel-cli \
             npm \
             bower \
             uglify-js && \
