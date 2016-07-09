@@ -18,7 +18,7 @@ RUN dpkg --add-architecture i386 && \
     echo echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get update && \
-    apt-get install -y \
+    apt-get -o Dpkg::Options::="--force-overwrite" install -y \
               oracle-java8-installer \
               oracle-java8-set-default \
               curl \
@@ -47,6 +47,8 @@ RUN dpkg --add-architecture i386 && \
               lib32z1-dev \
               zlib1g:amd64 \
               zlib1g-dev:amd64 \
+              zlib1g:i386 \
+              zlib1g-dev:i386 \
               libgl1-mesa-dev \
               libx11-dev \
               libxml2-utils \
