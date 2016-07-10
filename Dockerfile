@@ -1,4 +1,4 @@
-FROM quay.io/alaska/baseimage
+FROM phusion/baseimage
 MAINTAINER Owen Ouyang <owen.ouyang@live.com>
 
 ENV SHELL=/bin/bash \
@@ -34,8 +34,6 @@ RUN dpkg --add-architecture i386 && \
               software-properties-common \
               build-essential \
               git \
-              gcc-4.8 \
-              g++-4.8 \
               g++-multilib \
               distcc \
               ccache \
